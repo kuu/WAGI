@@ -1,0 +1,22 @@
+{
+  "name": "Web Audio Graph Inspector",
+  "version": "0.1",
+  "description": "Extending Chrome Developer Tools panel UI, displaying a snapshot of the graph of the audio nodes connected via Web Audio API.",
+  "manifest_version": 2,
+  "devtools_page": "lib/devtools.html",
+  "permissions": [
+    "tabs",
+    "<all_urls>"
+  ],
+  "background": {
+    "scripts": [
+      "lib/background.js"
+    ]
+  },
+  "content_scripts": [{
+    "matches": ["<all_urls>"],
+    "js": ["lib/content.js"],
+    "run_at": "document_start",
+    "all_frames": true
+  }]
+}
