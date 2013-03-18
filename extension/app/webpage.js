@@ -448,7 +448,7 @@ function registerWebPageListeners(global) {
       wagiAudioContext.prototype.createBuffer = function () {
         return mAudioContextClass.prototype.createBuffer.apply(this._context, arguments);
       };
-      wagiAudioContext.decodeAudioData = function () {
+      wagiAudioContext.prototype.decodeAudioData = function () {
         mAudioContextClass.prototype.decodeAudioData.apply(this._context, arguments);
       };
       wagiAudioContext.prototype.createWaveTable = function () {
