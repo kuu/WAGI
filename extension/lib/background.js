@@ -3,7 +3,10 @@ chrome.extension.onConnect.addListener(function (port) {
         //Request a tab for sending needed information
         chrome.tabs.query({
             "status": "complete",
-            "currentWindow": true
+            "currentWindow": true,
+            "windowType": "normal",
+            "active": true,
+            "highlighted": true
         }, function (tabs) {
             for (tab in tabs) {
                 //Sending Message to content scripts
