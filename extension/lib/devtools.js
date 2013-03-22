@@ -103,11 +103,16 @@ chrome.devtools.panels.create(
         privObj.windowId = -1;
 
         // Get the window's id that is unique within the tab.
-        var topLevelWindowPrivObj = global.top.devtoolsPanelBoilerplace;
-        if (!topLevelWindowPrivObj) {
-          topLevelWindowPrivObj = global.top.devtoolsPanelBoilerplace = {windowNum: 0};
+        try {
+          var topLevelWindowPrivObj = global.top.devtoolsPanelBoilerplace;
+          if (!topLevelWindowPrivObj) {
+            topLevelWindowPrivObj = global.top.devtoolsPanelBoilerplace = {windowNum: 0};
+          }
+          privObj.windowId = topLevelWindowPrivObj.windowNum++;
+          //console.log('WindowId=' + privObj.windowId);
+        } catch (e) {
+          console.error('Accessing the top level window is not allowed.', e);
         }
-        privObj.windowId = topLevelWindowPrivObj.windowNum++;
 
         // A unitility function to post a message to the devtools panel.
         var doPostMessage = function (pType, pParams) {
@@ -138,12 +143,13 @@ chrome.devtools.panels.create(
         doPostMessage('preload');
 
         // Notify the devtools panel that the web page has been loaded.
-        global.onload = function (e) {
+        global.addEventListener('load', function (e) {
+          //console.log('[Web page] Document loaded.');
           doInvokeListeners('load', e);
           doPostMessage('load', {
             url: (global.document ? global.document.URL : null),
             title: (global.document ? global.document.title : null)});
-        };
+        }, false);
 
         // Handles the messages from the devtools panel.
         global.addEventListener('message', function(event) {
