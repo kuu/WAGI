@@ -130,8 +130,8 @@ function registerWebPageListeners(global) {
             var tOutputIndex = arguments[0];
             var tDownstream = tSelf.downstream, tUpstream;
             var doDisconnect = function (pDownstream, pIndex, pOutputIndex) {
-              var tItem = pDownstream.splice(pIndex, 1);
-              var tUpstream = tItem.node.upstream;
+              var tRemoved = pDownstream.splice(pIndex, 1);
+              var tUpstream = tRemoved[0].node.upstream;
               for (var i = tUpstream.length; i--; ) {
                 if (tUpstream[i].node === tSelf) {
                   if (pOutputIndex === void 0) {

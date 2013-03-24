@@ -64,7 +64,7 @@ chrome.devtools.panels.create(
       var doPostMessage = function (pType, pParams, pId) {
         var tData = {
           from: 'devtools', 
-          id: (pId || 0),
+          session: (pId || ''),
           type: pType
         };
         if (pParams) {
@@ -80,11 +80,11 @@ chrome.devtools.panels.create(
         if (pMsg.from !== 'webpage') return;
 
         if (pMsg.type === 'preload') {
-          mWindowData[pMsg.id] = {
+          mWindowData[pMsg.session] = {
             state: 'preloaded'
           };
         } else if (pMsg.type === 'load') {
-          mWindowData[pMsg.id].state = 'loaded';
+          mWindowData[pMsg.session].state = 'loaded';
         }
         var response = pMsg.data;
         var tListener = window.devtoolsBridge.listeners[pMsg.type];
@@ -98,9 +98,9 @@ chrome.devtools.panels.create(
       // The script will be injected into every frame of the inspected page
       //  immediately upon load, before any of the frame's scripts.
       var mFunctionToInject = function (global) {
+        /*
         // A global variable to hold every data.
         var privObj = global.devtoolsPanelBoilerplate = {};
-        privObj.windowId = -1;
 
         // Get the window's id that is unique within the tab.
         try {
@@ -109,16 +109,17 @@ chrome.devtools.panels.create(
             topLevelWindowPrivObj = global.top.devtoolsPanelBoilerplace = {windowNum: 0};
           }
           privObj.windowId = topLevelWindowPrivObj.windowNum++;
-          //console.log('WindowId=' + privObj.windowId);
+          console.log('WindowId=' + privObj.windowId);
         } catch (e) {
           console.error('Accessing the top level window is not allowed.', e);
         }
+        */
 
         // A unitility function to post a message to the devtools panel.
         var doPostMessage = function (pType, pParams) {
           var tData = {
             from: 'webpage', 
-            id: privObj.windowId,
+            session: (global.document ? global.document.URL : null),
             type: pType
           };
           for (var k in pParams) {
@@ -147,7 +148,6 @@ chrome.devtools.panels.create(
           //console.log('[Web page] Document loaded.');
           doInvokeListeners('load', e);
           doPostMessage('load', {
-            url: (global.document ? global.document.URL : null),
             title: (global.document ? global.document.title : null)});
         }, false);
 
@@ -156,7 +156,7 @@ chrome.devtools.panels.create(
           if (event.source != global) return;
           var tMsg = event.data;
           if (tMsg.from !== 'devtools') return;
-          if (tMsg.id !== privObj.windowId) return;
+          if (tMsg.session !== (global.document ? global.document.URL : null)) return;
           //console.log('[Web page] postMessage received.', tMsg);
           doInvokeListeners(tMsg.type, tMsg);
         }, false);

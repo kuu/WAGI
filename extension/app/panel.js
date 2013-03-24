@@ -25,16 +25,29 @@ function registerPanelListeners(global) {
    */
   myPanel.on('load', function (event, sendEvent) {
     button.addEventListener('click', function () {
-      sendEvent('capture', null, event.id);
+      sendEvent('capture', null, event.session);
     }, false);
 
-    windowInfo[event.id + ''] = {
+    windowInfo[event.session + ''] = {
       title: event.title,
-      url: event.url
+      context: null
     };
   });
 
   myPanel.on('snapshot', function (event, sendEvent) {
-    result.innerHTML= event.context;
+    var tSessionId = event.session + '';
+    var tSessionData = windowInfo[tSessionId];
+    if (!tSessionData) {
+      return;
+    }
+    tSessionData.context = event.context;
+    var tElement = document.getElementById(tSessionId);
+    if (tElement) {
+      tElement.innerHTML= event.context;
+    } else {
+      tElement = document.createElement('div');
+      tElement.innerHTML= event.context;
+      result.appendChild(tElement);
+    }
   });
 };
