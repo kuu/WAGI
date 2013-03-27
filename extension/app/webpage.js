@@ -494,25 +494,34 @@ function registerWebPageListeners(global) {
         tList.push('{');
         tList.push('"source" : [');
         for (i = 0, il = mSource.length; i < il; i++) {
-          tList.push(printNode(mSource[i], true));
-          if (i !== il - 1) {
-            tList.push(',');
+          tList.push('{');
+          tList.push('"node" : ' + printNode(mSource[i], true));
+          if (i === il - 1) {
+            tList.push('}');
+          } else {
+            tList.push('},');
           }
         }
         tList.push('],');
         tList.push('"intermediate" : [');
         for (i = 0, il = mIntermediate.length; i < il; i++) {
-          tList.push(printNode(mIntermediate[i], true));
-          if (i !== il - 1) {
-            tList.push(',');
+          tList.push('{');
+          tList.push('"node" : ' + printNode(mIntermediate[i], true));
+          if (i === il - 1) {
+            tList.push('}');
+          } else {
+            tList.push('},');
           }
         }
         tList.push('],');
         tList.push('"desitination" : [');
         for (i = 0, il = mDestination.length; i < il; i++) {
-          tList.push(printNode(mDestination[i], true));
-          if (i !== il - 1) {
-            tList.push(',');
+          tList.push('{');
+          tList.push('"node" : ' + printNode(mDestination[i], true));
+          if (i === il - 1) {
+            tList.push('}');
+          } else {
+            tList.push('},');
           }
         }
         tList.push(']');

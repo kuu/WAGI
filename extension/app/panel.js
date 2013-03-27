@@ -51,7 +51,7 @@ function registerPanelListeners(global) {
       return;
     }
     tSessionData.context = event.context;
-    drawGraph(result, event.context);
+    drawGraph(result, JSON.parse(event.context));
 /*
     var tElement = document.getElementById(tSessionId);
     if (tElement) {
