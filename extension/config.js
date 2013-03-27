@@ -33,6 +33,8 @@ function configApp() {
      * @default []
      */
     panelScripts: [
+      'lib/sigma.min.js',
+      'app/sigma.parseAudioGraph.js',
       'app/panel.js',
       'app/webpage.js'
       ]
