@@ -482,10 +482,10 @@ function registerWebPageListeners(global) {
         var printNode = function (pNode, pPrintAdjacent) {
           var tList = [];
           tList.push('{');
-          tList.push('"type" : ' + pNode.type + ',');
-          tList.push('"id" : ' + pNode.id + ',');
+          tList.push('"type" : "' + pNode.type + '",');
+          tList.push('"id" : "' + pNode.id + '"');
           if (pPrintAdjacent) {
-            tList.push('"upstream" : ' + printAdjacent(pNode.upstream) + ',');
+            tList.push(',"upstream" : ' + printAdjacent(pNode.upstream) + ',');
             tList.push('"downstream" : ' + printAdjacent(pNode.downstream));
           }
           tList.push('}');
