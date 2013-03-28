@@ -1,24 +1,24 @@
 sigma.publicPrototype.parseAudioGraph = function(pData) {
 
-    alert('parseAudioGraph called!');
-    var sigmaInstance = this;
+    //alert('parseAudioGraph called! : source.len=' + pData.source.length + ', intermediate.len=' + pData.intermediate.length);
+    var tSigmaInstance = this;
     var tSourceList = pData.source;
     var tIntermediateList = pData.intermediate;
     var tColor = '#ff6600';
 
     var addSigmaNode = function (pAudioNode) {
-      var tSigmaNode = {label: pAudioNode.type + '(id=' + pAudioNode.id + ')', color: tColor};
-      alert('addSigmaNode: ' + tSigmaNode.lable);
-      sigmaInstance.addNode(pAudioNode.id + '', tSigmaNode);
+      var tSigmaNode = {label: (pAudioNode.type + '(id=' + pAudioNode.id + ')'), color: tColor};
+      alert('addSigmaNode: ' + tSigmaNode.label);
+      tSigmaInstance.addNode(pAudioNode.id + '', tSigmaNode);
     };
 
     var doTraverseAudioGraph = function (pNode) {
-      alert('doTraverseAudioGraph called!');
-      var tQueue = [];
+      //alert('doTraverseAudioGraph called!');
+      var tQueue = [], tNode;
       addSigmaNode(pNode.node);
       pNode.visited = true;
       tQueue.push(pNode);
-      while (var tNode = tQueue.shift()) {
+      while ((tNode = tQueue.shift()) !== null) {
         var tDownstream = tNode.node.downstream;
         for (var i = 0, il = tDownstream.length; i < il; i++) {
           tNode = tDownstream[i];
@@ -32,8 +32,10 @@ sigma.publicPrototype.parseAudioGraph = function(pData) {
     };
 
     for (var i = 0, il = tSourceList.length; i < il; i++) {
-      var tSourceNode = tSourceList[i];
-      doTraverseAudioGraph.call(this, tSourceNode);
+      doTraverseAudioGraph(tSourceList[i]);
+    }
+    for (var i = 0, il = tIntermediateList.length; i < il; i++) {
+      doTraverseAudioGraph(tIntermediateList[i]);
     }
 /*
   var edges = [];
@@ -56,7 +58,7 @@ sigma.publicPrototype.parseAudioGraph = function(pData) {
         edge.attributes.push({attr:attr, val:val});
       }
 
-      sigmaInstance.addEdge(edgeId++,source,target,edge);
+      tSigmaInstance.addEdge(edgeId++,source,target,edge);
     }
     */
 };

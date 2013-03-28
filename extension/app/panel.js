@@ -7,17 +7,21 @@ function registerPanelListeners(global) {
 
   var myPanel = global.devtoolsBridge;
   var document = global.document;
+  var root = document.getElementById('root');
+  var control = document.getElementById('control');
   var button = document.getElementsByTagName('button')[0];
-  var result = document.getElementById('result');
-/*
-  var tStyle = result.style;
-  tStyle.position = 'absolute';
-  tStyle.width = '100%';
-  tStyle.height = '100%';
-  tStyle.top = 0;
-  tStyle.left = 0;
-  //tStyle.background = '#222';
-*/
+  var stage = document.getElementById('stage');
+  control.style.position = 'absolute';
+  control.style.width = '100%';
+  control.style.height = '10%';
+  control.style.top = 0;
+  control.style.left = 0;
+  stage.style.position = 'absolute';
+  stage.style.width = '100%';
+  stage.style.height = '90%';
+  stage.style.top = '10%';
+  stage.style.left = 0;
+  stage.style.background = '#222';
 
   var windowInfo = {};
 
@@ -51,17 +55,7 @@ function registerPanelListeners(global) {
       return;
     }
     tSessionData.context = event.context;
-    drawGraph(result, JSON.parse(event.context));
-/*
-    var tElement = document.getElementById(tSessionId);
-    if (tElement) {
-      tElement.innerHTML= event.context;
-    } else {
-      tElement = document.createElement('div');
-      tElement.innerHTML= event.context;
-      result.appendChild(tElement);
-    }
-*/
+    drawGraph(stage, JSON.parse(event.context));
   });
 
   function drawGraph(pContainer, pData) {
